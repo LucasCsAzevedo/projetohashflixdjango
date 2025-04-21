@@ -22,6 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 TOKEN_CSRF = os.getenv("TOKEN_CSRF")
+
 if TOKEN_CSRF:
     SECRET_KEY = TOKEN_CSRF # Se estiver testando o online, vamos usar o token que criamos anteriormente
     CSRF_TRUSTED_ORIGINS = ['https://projetohashflixdjango-production-88c9.up.railway.app'] # Só aceitamos requisições de formulários caso esse venha desse link (Nosso site no momento)
