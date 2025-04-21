@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +21,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ot=t3jycb#7jyus$+-q+ls9q&h(+(erox-r&pg3n%tm$$vb)ic'
+TOKEN_CSRF = os.getenv("TOKEN_CSRF")
+if TOKEN_CSRF:
+    SECRET_KEY = TOKEN_CSRF # Se estiver testando o online, vamos usar o token que criamos anteriormente
+    CSRF_TRUSTED_ORIGINS = ['https://projetohashflixdjango-production-88c9.up.railway.app/'] # Só aceitamos requisições de formulários caso esse venha desse link (Nosso site no momento)
+else:
+    SECRET_KEY = 'django-insecure-ot=t3jycb#7jyus$+-q+ls9q&h(+(erox-r&pg3n%tm$$vb)ic' # Caso contrátio, se estivermos no desktop usaremos esse token mesmo
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True # Vamos começar o deploy do site
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['https://projetohashflixdjango-production-88c9.up.railway.app/', 'localhost', '127.0.0.1'] # Lugar onde meu site vai rodar, no link e no localhost, tanto como nome, quanto como o código de IP
 
 
 # Application definition
@@ -86,7 +92,6 @@ DATABASES = {
 }
 
 import dj_database_url
-import os
 
 DATABASE_URL = 'postgresql://postgres:LaDXkaaXskaxGHSJyLGgsBZTMxabmjEE@shortline.proxy.rlwy.net:51130/railway'
 if DATABASE_URL:
